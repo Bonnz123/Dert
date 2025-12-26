@@ -2,9 +2,7 @@ package dert
 
 import "strings"
 
-type TypeData struct {
-	Slice, Pointer, Byte, String, Reader string
-}
+type TypeData string
 
 
 type resultError struct {
@@ -19,12 +17,13 @@ func (e *resultError) Error() string {
 	return e.Message
 }
 
-var TypeDataList = TypeData{
-	Pointer: "Pointer",
-	Byte: "Byte",
-	String: "String",
-	Reader: "Reader",
-}
+const (
+	TypeDataString = TypeData("string")
+	TypeDataByte = TypeData("byte")
+	TypeDataReader = TypeData("reader")
+	TypeDataPointer = TypeData("pointer")
+
+)
 
 func SayHello() string {
 	return "Hello World"
@@ -38,13 +37,13 @@ func SayMyName(name string, result TypeData) (any, error) {
 		}
 	}
 
-	if result.Pointer == TypeDataList.Pointer {
+	if result == TypeDataPointer {
 		return &name, nil
-	} else if result.String == TypeDataList.String {
+	} else if result == TypeDataString {
 		return name, nil
-	} else if result.Byte == TypeDataList.Byte {
+	} else if result == TypeDataByte {
 		return []byte(name), nil
-	} else if result.Reader == TypeDataList.Reader {
+	} else if result == TypeDataReader {
 		return strings.NewReader(name), nil
 	}
 
